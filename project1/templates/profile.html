@@ -1,0 +1,227 @@
+```html
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - Smart Journey Assistant</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/profile.css' %}?v=1">
+
+</head>
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header class="dashboard-header">
+
+    <div class="logo">
+        Smart Journey Assistant
+    </div>
+
+    <nav class="navbar">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'customer_dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="#">
+            My Trips
+        </a>
+
+        <a href="#">
+            Bookings
+        </a>
+
+        <a href="{% url 'profile' %}" class="active">
+            Profile
+        </a>
+
+        <a href="{% url 'login' %}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ================= PROFILE SECTION ================= -->
+
+<main class="profile-container">
+
+    <section class="profile-heading">
+
+        <h1>
+            My Profile
+        </h1>
+
+        <p>
+            View your Smart Journey Assistant account information.
+        </p>
+
+    </section>
+
+
+    <!-- ================= PROFILE CARD ================= -->
+
+    <section class="profile-card">
+
+        <div class="profile-icon">
+            👤
+        </div>
+
+        <h2>
+            {{ user.name }}
+        </h2>
+
+        <p class="profile-role">
+            {{ user.role|title }}
+        </p>
+
+
+        <!-- ================= USER DETAILS ================= -->
+
+        <div class="profile-details">
+
+            <div class="detail-row">
+
+                <span class="detail-label">
+                    Full Name
+                </span>
+
+                <span class="detail-value">
+                    {{ user.name }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="detail-label">
+                    Email
+                </span>
+
+                <span class="detail-value">
+                    {{ user.email }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="detail-label">
+                    Phone
+                </span>
+
+                <span class="detail-value">
+                    {{ user.phone|default:"Not provided" }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="detail-label">
+                    Location
+                </span>
+
+                <span class="detail-value">
+                    {{ user.location|default:"Not provided" }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="detail-label">
+                    Zipcode
+                </span>
+
+                <span class="detail-value">
+                    {{ user.zipcode|default:"Not provided" }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="detail-label">
+                    Gender
+                </span>
+
+                <span class="detail-value">
+                    {{ user.gender|title|default:"Not provided" }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="detail-label">
+                    Date of Birth
+                </span>
+
+                <span class="detail-value">
+                    {{ user.dob|default:"Not provided" }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="detail-label">
+                    Account Type
+                </span>
+
+                <span class="detail-value">
+                    {{ user.role|title }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="dashboard-footer">
+
+    <p>
+        © 2026 Smart Journey Assistant.
+        All rights reserved.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
+```

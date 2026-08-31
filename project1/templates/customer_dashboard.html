@@ -1,0 +1,174 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Dashboard - Smart Journey Assistant</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/customer_dashboard.css' %}?v=2">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="dashboard-header">
+
+    <div class="logo">
+        Smart Journey Assistant
+    </div>
+
+    <nav class="navbar">
+        <a href="{% url 'home' %}">
+        Home
+        </a>
+
+        <a href="{% url 'customer_dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="#">
+            My Trips
+        </a>
+
+        <a href="#">
+            Bookings
+        </a>
+
+        <a  href="{% url 'profile' %}">
+             Profile
+       </a>
+    
+
+        <a href="{% url 'login' %}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="dashboard-container">
+
+    <!-- Welcome -->
+
+    <section class="welcome-section">
+
+        <h1>
+            Welcome, {{ request.session.name }}!
+        </h1>
+
+        <p>
+            Plan your perfect journey with Smart Journey Assistant.
+        </p>
+
+    </section>
+
+
+    <!-- Search -->
+
+    <section class="search-section">
+
+        <h2>
+            Where do you want to go?
+        </h2>
+
+        <form>
+
+            <input
+                type="text"
+                placeholder="Search destination..."
+                name="destination">
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- Dashboard Cards -->
+
+    <section class="dashboard-cards">
+
+        <!-- Plan Journey -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                ✈️
+            </div>
+
+            <h3>
+                Plan Your Journey
+            </h3>
+
+            <p>
+                Create a personalized travel plan based on your destination.
+            </p>
+              
+            <a href="{% url 'chatbot' %}">
+                Plan Now
+            </a>
+
+        </div>
+        <div class="dashboard-card">
+
+    <div class="card-icon">
+        🚆
+    </div>
+
+    <h3>
+        Book Train
+    </h3>
+
+    <p>
+        Book a train ticket and get your e-ticket instantly.
+    </p>
+
+    <a href="{% url 'book_train' %}">
+        Book Now
+    </a>
+
+</div>
+<div class="dashboard-card">
+    <div class="card-icon">📍</div>
+    <h3>Nearby Places</h3>
+    <p>Find hotels, PGs, hospitals and restaurants near you.</p>
+    <a href="{% url 'nearby_places' %}">Explore Nearby</a>
+</div>
+<div class="dashboard-card">
+    <div class="card-icon">🚆</div>
+    <h3>Smart Train Assistant</h3>
+    <p>Upload your ticket and get live journey tracking with alerts.</p>
+    <a href="{% url 'upload_ticket' %}">Track My Train</a>
+</div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="dashboard-footer">
+
+    <p>
+        © 2026 Smart Journey Assistant. All rights reserved.
+    </p>
+
+</footer>
+
+</body>
+
+</html>

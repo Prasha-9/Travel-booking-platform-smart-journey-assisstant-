@@ -1,0 +1,671 @@
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: beige;
+    color: #111111;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+    height: 70px;
+
+    background-color: #111111;
+    color: beige;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 70px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+}
+
+
+/* Logo */
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+
+    color: #38BDF8;
+}
+
+
+/* Navigation */
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.navbar a {
+    text-decoration: none;
+
+    color: beige;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    color: #38BDF8;
+}
+
+
+/* =========================================
+   HERO SECTION
+========================================= */
+
+.hero {
+    min-height: 360px;
+
+    background: linear-gradient(
+        135deg,
+        #111111,
+        #1e293b
+    );
+
+    color: beige;
+
+    text-align: center;
+
+    padding: 80px 20px 100px;
+}
+
+.hero h1 {
+    font-size: 44px;
+
+    color: #38BDF8;
+
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 19px;
+
+    color: beige;
+
+    margin-bottom: 30px;
+}
+
+
+/* Get Started Button */
+
+.signup-button {
+    display: inline-block;
+
+    background-color: #38BDF8;
+
+    color: #111111;
+
+    padding: 13px 35px;
+
+    border-radius: 25px;
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.signup-button:hover {
+    background-color: beige;
+
+    color: #111111;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   BOOKING / SEARCH SECTION
+========================================= */
+
+.booking-section {
+    width: 100%;
+
+    margin-top: -60px;
+
+    position: relative;
+
+    z-index: 10;
+}
+
+.booking-box {
+    width: 85%;
+
+    max-width: 1100px;
+
+    margin: auto;
+
+    background-color: beige;
+
+    padding: 25px 30px 30px;
+
+    border-radius: 12px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Service Tabs */
+
+.service-tabs {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 40px;
+
+    border-bottom: 2px solid #38BDF8;
+
+    padding-bottom: 15px;
+
+    margin-bottom: 25px;
+}
+
+.service-tabs a {
+    text-decoration: none;
+
+    color: #111111;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.service-tabs a:hover {
+    color: #0284C7;
+}
+
+
+/* Search Fields */
+
+.search-fields {
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 15px;
+}
+
+.search-field {
+    flex: 1;
+}
+
+.search-field label {
+    display: block;
+
+    color: #111111;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    margin-bottom: 7px;
+}
+
+.search-field input {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 5px;
+
+    font-size: 14px;
+
+    background-color: beige;
+
+    color: #111111;
+}
+
+.search-field input:focus {
+    outline: none;
+
+    border-color: #38BDF8;
+
+    box-shadow: 0 0 5px rgba(56, 189, 248, 0.4);
+}
+
+
+/* Search Button */
+
+.search-btn {
+    display: block;
+
+    margin: 25px auto 0;
+
+    padding: 12px 45px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background-color: #38BDF8;
+
+    color: #111111;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.search-btn:hover {
+    background-color: #0284C7;
+
+    color: beige;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   SERVICES SECTION
+========================================= */
+
+.services {
+    padding: 70px 70px 50px;
+
+    text-align: center;
+
+    background-color: beige;
+}
+
+.services h2 {
+    font-size: 30px;
+
+    color: #111111;
+
+    margin-bottom: 40px;
+}
+
+.services h2::after {
+    content: "";
+
+    display: block;
+
+    width: 60px;
+
+    height: 3px;
+
+    background-color: #38BDF8;
+
+    margin: 10px auto 0;
+}
+
+
+/* Service Cards Container */
+
+.service-container {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
+
+    max-width: 1200px;
+
+    margin: auto;
+}
+
+
+/* Individual Card */
+
+.service-card {
+    width: 330px;
+
+    min-height: 210px;
+
+    background-color: beige;
+
+    padding: 30px 25px;
+
+    border-radius: 12px;
+
+    border: 1px solid beige;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+    transition: 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-7px);
+
+    border-color: #38BDF8;
+
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+}
+
+
+/* Service Icon */
+
+.service-icon {
+    font-size: 40px;
+
+    margin-bottom: 15px;
+}
+
+
+/* Service Title */
+
+.service-card h3 {
+    color: #111111;
+
+    font-size: 20px;
+
+    margin-bottom: 12px;
+}
+
+
+/* Service Description */
+
+.service-card p {
+    color: #555555;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   WHY SJA SECTION
+========================================= */
+
+.why-sja {
+    background-color: beige;
+
+    padding: 60px 70px;
+
+    text-align: center;
+}
+
+.why-sja h2 {
+    color: #111111;
+
+    font-size: 30px;
+
+    margin-bottom: 35px;
+}
+
+.why-sja h2::after {
+    content: "";
+
+    display: block;
+
+    width: 60px;
+
+    height: 3px;
+
+    background-color: #38BDF8;
+
+    margin: 10px auto 0;
+}
+
+
+/* Why Cards */
+
+.why-container {
+    max-width: 1100px;
+
+    margin: auto;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
+}
+
+.why-card {
+    width: 240px;
+
+    background-color: beige;
+
+    padding: 25px 20px;
+
+    border-radius: 10px;
+
+    border-top: 4px solid #38BDF8;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+
+    transition: 0.3s;
+}
+
+.why-card:hover {
+    transform: translateY(-5px);
+}
+
+.why-card h3 {
+    color: #111111;
+
+    margin-bottom: 10px;
+
+    font-size: 18px;
+}
+
+.why-card p {
+    color: #555555;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+    background-color: #111111;
+
+    color: beige;
+
+    margin-top: 0;
+}
+
+
+/* Footer Content */
+
+.footer-content {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 40px;
+
+    padding: 50px 70px;
+}
+
+
+/* Footer Sections */
+
+.footer-section {
+    width: 23%;
+}
+
+.footer-section h3 {
+    color: #38BDF8;
+
+    font-size: 18px;
+
+    margin-bottom: 15px;
+}
+
+.footer-section p {
+    color: beige;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    margin-bottom: 7px;
+}
+
+
+/* Footer Links */
+
+.footer-section a {
+    display: block;
+
+    color: beige;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    margin-bottom: 9px;
+
+    transition: 0.3s;
+}
+
+.footer-section a:hover {
+    color: #38BDF8;
+
+    padding-left: 3px;
+}
+
+
+/* Footer Bottom */
+
+.footer-bottom {
+    text-align: center;
+
+    border-top: 1px solid #333333;
+
+    padding: 18px;
+}
+
+.footer-bottom p {
+    color: #aaaaaa;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 900px) {
+
+    .header {
+        padding: 0 30px;
+    }
+
+    .search-fields {
+        flex-direction: column;
+    }
+
+    .search-field {
+        width: 100%;
+    }
+
+    .footer-content {
+        flex-wrap: wrap;
+    }
+
+    .footer-section {
+        width: 45%;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .header {
+        height: auto;
+
+        flex-direction: column;
+
+        padding: 20px;
+
+        gap: 15px;
+    }
+
+    .navbar {
+        gap: 15px;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .booking-box {
+        width: 92%;
+    }
+
+    .service-tabs {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .services {
+        padding: 50px 20px;
+    }
+
+    .why-sja {
+        padding: 50px 20px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+
+        padding: 40px 30px;
+    }
+
+    .footer-section {
+        width: 100%;
+    }
+}

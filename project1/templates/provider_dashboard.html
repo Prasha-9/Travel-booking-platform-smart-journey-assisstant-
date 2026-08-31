@@ -1,0 +1,280 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Provider Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/admin_dashboard.css' %}?v=1">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        Smart Journey Assistant
+    </div>
+
+    <nav class="navbar">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'provider_profile' %}">
+            Profile
+        </a>
+
+        <a href="{% url 'login' %}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="provider-container">
+
+    <section class="provider-welcome">
+
+        <h1>
+            Provider Dashboard
+        </h1>
+
+        <p>
+            Manage your services from one place.
+        </p>
+
+    </section>
+
+
+    <section class="provider-section">
+
+        <div class="section-heading">
+
+            <h2>
+                My Services
+            </h2>
+
+            <p>
+                Services added by you.
+            </p>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Service ID</th>
+                        <th>Service Type</th>
+                        <th>Service Name</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Rating</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for service in services %}
+
+                    <tr>
+
+                        <td>
+                            {{ service.0 }}
+                        </td>
+
+                        <td>
+                            {{ service.2 }}
+                        </td>
+
+                        <td>
+                            {{ service.3 }}
+                        </td>
+
+                        <td>
+                            {{ service.4 }}
+                        </td>
+
+                        <td>
+                            {{ service.5 }}
+                        </td>
+
+                        <td>
+                            {{ service.6 }}
+                        </td>
+
+                        <td>
+                            {{ service.7 }}
+                        </td>
+
+                        <td>
+                            {{ service.8 }}
+                        </td>
+
+                        <td>
+                            {{ service.9 }}
+                        </td>
+
+                        <td>
+
+                            <a href="#"
+                               class="update-btn">
+
+                                Update
+
+                            </a>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                type="button"
+                                class="delete-btn">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="11"
+                            class="empty-message">
+
+                            No services found.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <div class="footer-section">
+
+            <h3>
+                Smart Journey Assistant
+            </h3>
+
+            <p>
+                Your smart companion for
+                planning, booking and
+                managing your journey.
+            </p>
+
+        </div>
+
+
+        <div class="footer-section">
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'provider_dashboard' %}">
+                Provider Dashboard
+            </a>
+
+            <a href="{% url 'login' %}">
+                Logout
+            </a>
+
+        </div>
+
+
+        <div class="footer-section">
+
+            <h3>
+                Provider
+            </h3>
+
+            <p>
+                Manage Services
+            </p>
+
+            <p>
+                View Bookings
+            </p>
+
+        </div>
+
+
+        <div class="footer-section">
+
+            <h3>
+                Contact Us
+            </h3>
+
+            <p>
+                India
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Smart Journey Assistant.
+            All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

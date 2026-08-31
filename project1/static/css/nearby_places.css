@@ -1,0 +1,199 @@
+.nearby-section {
+    padding: 50px 70px;
+}
+
+.nearby-section h2 {
+    font-size: 28px;
+    color: #111111;
+    margin-bottom: 8px;
+}
+
+.form-subtitle {
+    color: #555555;
+    margin-bottom: 25px;
+}
+
+.location-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.location-controls input {
+    flex: 1;
+    min-width: 200px;
+    padding: 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    background-color: beige;
+}
+
+.location-status {
+    font-size: 14px;
+    color: #555555;
+    margin-bottom: 25px;
+    min-height: 20px;
+}
+
+.category-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.category-tab {
+    padding: 10px 20px;
+    border: 1px solid #cbd5e1;
+    border-radius: 20px;
+    background-color: beige;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.category-tab.active {
+    background-color: #38BDF8;
+    color: #111111;
+    border-color: #38BDF8;
+}
+
+.results-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.place-card {
+    background-color: beige;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+.place-card h4 {
+    color: #111111;
+    margin-bottom: 8px;
+}
+
+.place-address, .place-phone {
+    font-size: 13px;
+    color: #555555;
+    margin-bottom: 4px;
+}
+
+.loading-text {
+    color: #888888;
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 30px;
+}
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border: 1px solid #cbd5e1;
+}
+.place-image {
+    width: 100%;
+    height: 140px;
+    background-color: #f0ead6;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.place-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder-icon {
+    font-size: 48px;
+}
+.place-card {
+    cursor: pointer;
+}
+
+.place-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.place-modal-content {
+    background-color: beige;
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 450px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.place-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 26px;
+    cursor: pointer;
+    color: #555555;
+}
+
+.place-modal-close:hover {
+    color: #111111;
+}
+
+.modal-image-container {
+    width: 100%;
+    height: 220px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    background-color: #f0ead6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-no-photo {
+    text-align: center;
+    color: #888888;
+}
+
+.modal-no-photo span {
+    font-size: 60px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#modal-name {
+    color: #111111;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+#modal-address, #modal-phone {
+    color: #555555;
+    font-size: 14px;
+    margin-bottom: 6px;
+}

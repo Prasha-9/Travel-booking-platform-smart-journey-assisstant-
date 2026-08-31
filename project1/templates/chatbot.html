@@ -1,0 +1,673 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Travel Assistant - Smart Journey Assistant</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/chatbot.css' %}?v=1">
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="logo">
+        Smart Journey Assistant
+    </div>
+
+    <nav class="navbar">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'customer_dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="#">
+            My Trips
+        </a>
+
+        <a href="#">
+            Bookings
+        </a>
+
+        <a href="{% url 'profile' %}">
+            Profile
+        </a>
+
+        <a href="login">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- =====================================================
+     CHATBOT PAGE
+===================================================== -->
+
+<main class="chatbot-page">
+
+
+    <!-- =================================================
+         CHATBOT HEADER
+    ================================================== -->
+
+    <div class="chatbot-title">
+
+        <h1>
+            AI Travel Assistant
+        </h1>
+
+        <p>
+            Ask me anything about your journey.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         CHATBOT CONTAINER
+    ================================================== -->
+
+    <section class="chatbot-container">
+
+
+        <!-- =============================================
+             LEFT SIDE - CHAT HISTORY
+        ============================================== -->
+
+        <aside class="chat-history">
+
+            <div class="history-header">
+
+                <h2>
+                    Chat History
+                </h2>
+
+                <button
+                    type="button"
+                    class="new-chat-btn"
+                    onclick="newChat()">
+
+                    + New Chat
+
+                </button>
+
+            </div>
+
+
+            <!-- History items will appear here -->
+
+            <div id="history-list"
+                 class="history-list">
+
+                <div class="history-item active">
+
+                    <span class="history-icon">
+                        💬
+                    </span>
+
+                    <span class="history-title">
+                        New Conversation
+                    </span>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =============================================
+             RIGHT SIDE - CHAT
+        ============================================== -->
+
+        <section class="chat-section">
+
+
+            <!-- Chat Header -->
+
+            <div class="chat-header">
+
+                <div class="ai-avatar">
+                    🤖
+                </div>
+
+                <div>
+
+                    <h2>
+                        Smart Travel AI
+                    </h2>
+
+                    <p>
+                        Your journey planning assistant
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+                 MESSAGES
+            ========================================== -->
+
+            <div id="chat-messages"
+                 class="chat-messages">
+
+
+                <!-- Initial AI message -->
+
+                <div class="message ai-message">
+
+                    <div class="message-avatar">
+                        🤖
+                    </div>
+
+                    <div class="message-content">
+
+                        <div class="message-name">
+                            Smart Travel AI
+                        </div>
+
+                        <div class="message-text">
+
+                            Hello! 👋
+
+                            <br><br>
+
+                            I'm your Smart Journey Assistant.
+
+                            <br><br>
+
+                            Tell me where you want to go,
+                            your travel dates, budget, or
+                            anything else about your journey.
+
+                            <br><br>
+
+                            For example:
+
+                            <br>
+
+                            <strong>
+                                "I want to travel to Goa
+                                for 3 days."
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================================
+                 TYPING INDICATOR
+            ========================================== -->
+
+            <div id="typing-indicator"
+                 class="typing-indicator"
+                 style="display: none;">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+                <p>
+                    AI is thinking...
+                </p>
+
+            </div>
+
+
+            <!-- =========================================
+                 MESSAGE INPUT
+            ========================================== -->
+
+            <div class="chat-input-area">
+
+                <textarea
+                    id="chat-input"
+                    placeholder="Ask about your journey..."
+                    rows="1"
+                    maxlength="2000"></textarea>
+
+
+                <button
+                    type="button"
+                    id="send-button"
+                    class="send-button"
+                    onclick="sendMessage()">
+
+                    Send
+
+                </button>
+
+            </div>
+
+
+            <div class="input-note">
+
+                AI-generated responses may not always
+                be accurate. Please verify important
+                travel information.
+
+            </div>
+
+
+        </section>
+
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+
+        <!-- About -->
+
+        <div class="footer-section">
+
+            <h3>
+                Smart Journey Assistant
+            </h3>
+
+            <p>
+                Your smart companion for
+                planning, booking and
+                managing your journey.
+            </p>
+
+        </div>
+
+
+        <!-- Quick Links -->
+
+        <div class="footer-section">
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'customer_dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'profile' %}">
+                Profile
+            </a>
+
+        </div>
+
+
+        <!-- Services -->
+
+        <div class="footer-section">
+
+            <h3>
+                Our Services
+            </h3>
+
+            <p>
+                Hotels & PGs
+            </p>
+
+            <p>
+                Cab & Auto
+            </p>
+
+            <p>
+                Nearby Places
+            </p>
+
+            <p>
+                Train Assistant
+            </p>
+
+            <p>
+                Maps & Navigation
+            </p>
+
+        </div>
+
+
+        <!-- Contact -->
+
+        <div class="footer-section">
+
+            <h3>
+                Contact Us
+            </h3>
+
+            <p>
+                Email:
+                peerappagariprashanthi@gmail.com
+            </p>
+
+            <p>
+                Phone:
+                +91 7993864213
+            </p>
+
+            <p>
+                India
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Footer Bottom -->
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Smart Journey Assistant.
+            All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    const chatInput =
+        document.getElementById("chat-input");
+
+    const chatMessages =
+        document.getElementById("chat-messages");
+
+    const typingIndicator =
+        document.getElementById("typing-indicator");
+
+
+    /* ================================================
+       ENTER KEY
+    ================================================= */
+
+    chatInput.addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter" && !event.shiftKey) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    });
+
+
+    /* ================================================
+       SEND MESSAGE
+    ================================================= */
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+async function sendMessage() {
+
+    const message = chatInput.value.trim();
+
+    if (message === "") {
+        return;
+    }
+
+    addUserMessage(message);
+
+    chatInput.value = "";
+
+    typingIndicator.style.display = "flex";
+
+    try {
+
+        const response = await fetch("{% url 'chatbot' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body: JSON.stringify({ message: message })
+        });
+
+        const data = await response.json();
+
+        typingIndicator.style.display = "none";
+
+        addAIMessage(data.reply);
+
+    } catch (error) {
+
+        typingIndicator.style.display = "none";
+
+        addAIMessage("Sorry, something went wrong. Please try again.");
+
+    }
+
+}
+
+
+    /* ================================================
+       ADD USER MESSAGE
+    ================================================= */
+
+    function addUserMessage(message) {
+
+        const messageDiv =
+            document.createElement("div");
+
+        messageDiv.className =
+            "message user-message";
+
+
+        messageDiv.innerHTML = `
+
+            <div class="message-content">
+
+                <div class="message-name">
+                    You
+                </div>
+
+                <div class="message-text">
+                    ${escapeHtml(message)}
+                </div>
+
+            </div>
+
+            <div class="message-avatar">
+                👤
+            </div>
+
+        `;
+
+
+        chatMessages.appendChild(messageDiv);
+
+
+        scrollChatToBottom();
+
+    }
+
+
+    /* ================================================
+       ADD AI MESSAGE
+    ================================================= */
+
+    function addAIMessage(message) {
+
+        const messageDiv =
+            document.createElement("div");
+
+        messageDiv.className =
+            "message ai-message";
+
+
+        messageDiv.innerHTML = `
+
+            <div class="message-avatar">
+                🤖
+            </div>
+
+            <div class="message-content">
+
+                <div class="message-name">
+                    Smart Travel AI
+                </div>
+
+                <div class="message-text">
+                    ${escapeHtml(message)}
+                </div>
+
+            </div>
+
+        `;
+
+
+        chatMessages.appendChild(messageDiv);
+
+
+        scrollChatToBottom();
+
+    }
+
+
+    /* ================================================
+       NEW CHAT
+    ================================================= */
+
+    function newChat() {
+
+        chatMessages.innerHTML = `
+
+            <div class="message ai-message">
+
+                <div class="message-avatar">
+                    🤖
+                </div>
+
+                <div class="message-content">
+
+                    <div class="message-name">
+                        Smart Travel AI
+                    </div>
+
+                    <div class="message-text">
+
+                        Hello! 👋
+
+                        <br><br>
+
+                        New conversation started.
+
+                        <br><br>
+
+                        How can I help you plan
+                        your journey?
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        chatInput.value = "";
+
+
+        typingIndicator.style.display =
+            "none";
+
+    }
+
+
+    /* ================================================
+       SCROLL CHAT
+    ================================================= */
+
+    function scrollChatToBottom() {
+
+        chatMessages.scrollTop =
+            chatMessages.scrollHeight;
+
+    }
+
+
+    /* ================================================
+       ESCAPE HTML
+    ================================================= */
+
+    function escapeHtml(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

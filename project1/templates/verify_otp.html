@@ -1,0 +1,403 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Verify OTP - Smart Journey Assistant</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        .header {
+            width: 100%;
+            background: #1f2937;
+            color: white;
+            padding: 20px 60px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar {
+            display: flex;
+            gap: 25px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        /* OTP SECTION */
+
+        .otp-section {
+            min-height: calc(100vh - 80px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 40px 20px;
+        }
+
+        /* OTP CARD */
+
+        .otp-container {
+            width: 420px;
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+
+            text-align: center;
+        }
+
+        .otp-container h1 {
+            font-size: 30px;
+            margin-bottom: 15px;
+            color: #1f2937;
+        }
+
+        .otp-container p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        /* OTP INPUT */
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            padding: 14px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 6px;
+
+            font-size: 22px;
+
+            text-align: center;
+
+            letter-spacing: 8px;
+
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #2563eb;
+        }
+
+        /* VERIFY BUTTON */
+
+        .verify-btn {
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            background: #2563eb;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .verify-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* ERROR */
+
+        .error-message {
+            color: red;
+
+            background: #ffe5e5;
+
+            padding: 10px;
+
+            border-radius: 5px;
+
+            margin-bottom: 15px;
+        }
+
+        /* SUCCESS */
+
+        .success-message {
+            color: green;
+
+            background: #e5ffe9;
+
+            padding: 10px;
+
+            border-radius: 5px;
+
+            margin-bottom: 15px;
+        }
+
+        /* RESEND */
+
+        .resend-section {
+            margin-top: 25px;
+        }
+
+        .resend-section p {
+            margin-bottom: 8px;
+        }
+
+        .resend-btn {
+            display: inline-block;
+
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .resend-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* LOGIN */
+
+        .login-link {
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .otp-container {
+                width: 100%;
+                padding: 30px 20px;
+            }
+
+            .navbar {
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="logo">
+        Smart Journey Assistant
+    </div>
+
+    <nav class="navbar">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'login' %}">
+            Login
+        </a>
+
+        <a href="{% url 'signup' %}">
+            Sign Up
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ================= OTP SECTION ================= -->
+
+<section class="otp-section">
+
+    <div class="otp-container">
+
+
+        <h1>
+            Verify OTP
+        </h1>
+
+
+        <p>
+            We have sent a 6-digit OTP to your registered email address.
+        </p>
+
+
+        <!-- ERROR MESSAGE -->
+
+        {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <!-- SUCCESS MESSAGE -->
+
+        {% if success %}
+
+            <div class="success-message">
+                {{ success }}
+            </div>
+
+        {% endif %}
+
+
+        <!-- OTP FORM -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <div class="form-group">
+
+                <label for="otp">
+                    Enter OTP
+                </label>
+
+                <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    placeholder="000000"
+                    maxlength="6"
+                    minlength="6"
+                    pattern="[0-9]{6}"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    required>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="verify-btn">
+
+                Verify OTP
+
+            </button>
+
+        </form>
+
+
+        <!-- RESEND OTP -->
+
+        <div class="resend-section">
+
+            <p>
+                Didn't receive the OTP?
+            </p>
+
+            <a
+                href="{% url 'resend_otp' %}"
+                class="resend-btn">
+
+                Resend OTP
+
+            </a>
+
+        </div>
+
+
+        <!-- BACK TO LOGIN -->
+
+        <div class="login-link">
+
+            <a href="{% url 'login' %}">
+                ← Back to Login
+            </a>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+</body>
+
+</html>

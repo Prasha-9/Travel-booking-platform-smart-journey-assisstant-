@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Ticket - Smart Journey Assistant</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/book_train.css' %}">
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">Smart Journey Assistant</div>
+        <div class="navbar">
+            <a href="{% url 'customer_dashboard' %}">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="booking-form-section">
+        <div class="booking-form-box">
+
+            <h2>Smart Train Assistant</h2>
+            <p class="form-subtitle">Upload a photo of your train ticket to start live tracking.</p>
+
+            {% if error %}
+                <div class="fare-display" style="background:#ffe5e5; border-color:#ff4444; color:#a30000;">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            {% if not extracted_data %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-field">
+                    <label>Ticket Photo</label>
+                    <input type="file" name="ticket_image" accept="image/*" required>
+                </div>
+                <button type="submit" class="search-btn">Read Ticket</button>
+            </form>
+
+            <div class="or-divider">— OR —</div>
+
+            <h3 style="margin-bottom:10px; color:#111111;">Don't have your ticket photo?</h3>
+            <p class="demo-note" style="margin-bottom:15px;">Track a train directly using its train number.</p>
+
+            <form method="POST" action="{% url 'track_by_train_number' %}">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Train Number</label>
+                        <input type="text" name="train_number" placeholder="e.g. 17225" maxlength="5" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Your Boarding Station</label>
+                        <select name="source_station" required>
+                            <option value="">Select station</option>
+                            {% for station in stations %}
+                                <option value="{{ station }}">{{ station }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="search-btn">Track This Train</button>
+
+            </form>
+            {% endif %}
+
+            {% if extracted_data %}
+            <div class="fare-display" style="{% if is_valid %}background:#e5ffe5; border-color:#22C55E; color:#0a5c1f;{% else %}background:#fff3e0; border-color:#ffa726; color:#996600;{% endif %}">
+                {% if is_valid %}
+                    ✓ Ticket format looks valid
+                {% else %}
+                    ⚠ Ticket format could not be fully verified. Please review the details below.
+                {% endif %}
+            </div>
+
+            {% if validation_errors %}
+            <ul style="color:#996600; font-size:13px; margin-bottom:15px;">
+                {% for err in validation_errors %}
+                <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <p class="demo-note">This checks the ticket's format only — it is not verified against Indian Railways' official database.</p>
+
+            <form method="POST" action="{% url 'confirm_ticket' %}">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>PNR Number</label>
+                        <input type="text" name="pnr_number" value="{{ extracted_data.pnr_number|default:'' }}" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Train Number</label>
+                        <input type="text" name="train_number" value="{{ extracted_data.train_number|default:'' }}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Train Name</label>
+                        <input type="text" name="train_name" placeholder="Enter train name">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Source Station</label>
+                        <select name="source_station" required>
+                            <option value="">Select station</option>
+                            {% for station in stations %}
+                                <option value="{{ station }}">{{ station }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label>Destination Station</label>
+                        <select name="destination_station" required>
+                            <option value="">Select station</option>
+                            {% for station in stations %}
+                                <option value="{{ station }}">{{ station }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Journey Date</label>
+                        <input type="text" name="journey_date" value="{{ extracted_data.journey_date|default:'' }}" placeholder="DD-MM-YYYY" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Departure Time</label>
+                        <input type="text" name="departure_time" value="{{ extracted_data.departure_time|default:'' }}" placeholder="HH:MM" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="search-btn">Start Tracking Journey</button>
+
+            </form>
+            {% endif %}
+
+        </div>
+    </div>
+
+</body>
+</html>

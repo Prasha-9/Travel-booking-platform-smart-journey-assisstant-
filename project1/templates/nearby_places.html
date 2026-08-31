@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nearby Places - Smart Journey Assistant</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nearby_places.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">Smart Journey Assistant</div>
+        <div class="navbar">
+            <a href="{% url 'customer_dashboard' %}">Dashboard</a>
+            <a href="{% url 'profile' %}">Profile</a>
+        </div>
+    </div>
+
+    <div class="nearby-section">
+
+        <h2>Nearby Places</h2>
+        <p class="form-subtitle">Find hotels, PGs, hospitals and restaurants around you.</p>
+
+        <div class="location-controls">
+            <button id="use-gps-btn" class="search-btn">📍 Use My Location</button>
+            <span>or</span>
+            <input type="text" id="manual-location" placeholder="Enter a place name (e.g. Hyderabad)">
+            <button id="search-location-btn" class="search-btn">Search</button>
+        </div>
+
+        <div id="location-status" class="location-status"></div>
+
+        <div id="map"></div>
+
+        <div class="category-tabs">
+            <button class="category-tab active" data-category="hotel">🏨 Hotels</button>
+            <button class="category-tab" data-category="pg">🛏️ PGs</button>
+            <button class="category-tab" data-category="hospital">🏥 Hospitals</button>
+            <button class="category-tab" data-category="restaurant">🍽️ Restaurants</button>
+        </div>
+
+        <div id="results-list" class="results-list"></div>
+
+        <div id="place-modal" class="place-modal" style="display:none;">
+            <div class="place-modal-content">
+                <span class="place-modal-close" id="modal-close">&times;</span>
+                <div id="modal-image-container" class="modal-image-container"></div>
+                <h3 id="modal-name"></h3>
+                <p id="modal-address"></p>
+                <p id="modal-phone"></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentLat = null;
+        let currentLon = null;
+        let currentCategory = "hotel";
+        let map = null;
+        let markers = [];
+
+        const categoryIcons = {
+            hotel: "🏨",
+            pg: "🛏️",
+            hospital: "🏥",
+            restaurant: "🍽️"
+        };
+
+        function initMap(lat, lon, label) {
+            if (map) {
+                map.remove();
+            }
+            map = L.map('map').setView([lat, lon], 14);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            L.marker([lat, lon], {
+                icon: L.divIcon({ className: 'you-marker', html: '📍', iconSize: [30, 30] })
+            }).addTo(map).bindPopup(label || "You are here").openPopup();
+        }
+
+        function clearMarkers() {
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+        }
+
+        function addPlaceMarkers(places) {
+            clearMarkers();
+            places.forEach(p => {
+                if (!p.lat || !p.lon) return;
+                const marker = L.marker([p.lat, p.lon]).addTo(map);
+                marker.bindPopup(`<strong>${p.name}</strong><br>${p.address}`);
+                markers.push(marker);
+            });
+        }
+
+        async function reverseGeocode(lat, lon) {
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`);
+                const data = await res.json();
+
+                const addr = data.address || {};
+
+                const parts = [
+                    addr.house_number,
+                    addr.road,
+                    addr.suburb || addr.neighbourhood,
+                    addr.city || addr.town
+                ].filter(Boolean);
+
+                const name = parts.length > 0 ? parts.join(", ") : (data.display_name || "your location");
+
+                return name;
+            } catch (e) {
+                return "your location";
+            }
+        }
+
+        document.getElementById('use-gps-btn').addEventListener('click', () => {
+            const status = document.getElementById('location-status');
+            status.textContent = "Detecting your location...";
+
+            if (!navigator.geolocation) {
+                status.textContent = "Geolocation not supported by your browser.";
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    currentLat = position.coords.latitude;
+                    currentLon = position.coords.longitude;
+                    status.textContent = "Detecting location name...";
+                    initMap(currentLat, currentLon, "You are here");
+                    loadPlaces();
+
+                    const placeName = await reverseGeocode(currentLat, currentLon);
+                    status.textContent = `Showing results near ${placeName}`;
+
+                    if (map) {
+                        L.marker([currentLat, currentLon], {
+                            icon: L.divIcon({ className: 'you-marker', html: '📍', iconSize: [30, 30] })
+                        }).addTo(map).bindPopup(placeName).openPopup();
+                    }
+                },
+                () => {
+                    status.textContent = "Could not get your location. Try manual search instead.";
+                }
+            );
+        });
+
+        document.getElementById('search-location-btn').addEventListener('click', async () => {
+            const place = document.getElementById('manual-location').value.trim();
+            const status = document.getElementById('location-status');
+
+            if (!place) {
+                status.textContent = "Please enter a location.";
+                return;
+            }
+
+            status.textContent = "Searching location...";
+
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(place)}&format=json&limit=1`);
+                const data = await res.json();
+
+                if (data.length === 0) {
+                    status.textContent = "Location not found. Try a different name.";
+                    return;
+                }
+
+                currentLat = parseFloat(data[0].lat);
+                currentLon = parseFloat(data[0].lon);
+                status.textContent = `Showing results near ${place}.`;
+                initMap(currentLat, currentLon, place);
+                loadPlaces();
+
+            } catch (e) {
+                status.textContent = "Error searching location.";
+            }
+        });
+
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentCategory = tab.dataset.category;
+                if (currentLat && currentLon) {
+                    loadPlaces();
+                }
+            });
+        });
+
+        async function loadPlaces() {
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = '<p class="loading-text">Loading nearby places...</p>';
+
+            try {
+                const res = await fetch(`/search-nearby/?lat=${currentLat}&lon=${currentLon}&category=${currentCategory}`);
+                const data = await res.json();
+
+                if (data.error) {
+                    resultsList.innerHTML = `<p class="loading-text">Error: ${data.error}</p>`;
+                    return;
+                }
+
+                if (data.places.length === 0) {
+                    resultsList.innerHTML = '<p class="loading-text">No places found nearby for this category.</p>';
+                    addPlaceMarkers([]);
+                    return;
+                }
+
+                const icon = categoryIcons[currentCategory] || "📍";
+
+                resultsList.innerHTML = data.places.map((p, i) => `
+                    <div class="place-card" data-index="${i}">
+                        <div class="place-image">
+                            ${p.image
+                                ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentElement.innerHTML='<span class=\\'placeholder-icon\\'>${icon}</span>'">`
+                                : `<span class="placeholder-icon">${icon}</span>`
+                            }
+                        </div>
+                        <h4>${p.name}</h4>
+                        <p class="place-address">📍 ${p.address}</p>
+                        <p class="place-phone">📞 ${p.phone}</p>
+                    </div>
+                `).join('');
+
+                addPlaceMarkers(data.places);
+
+                document.querySelectorAll('.place-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const place = data.places[card.dataset.index];
+                        openPlaceModal(place, icon);
+                    });
+                });
+
+            } catch (e) {
+                resultsList.innerHTML = '<p class="loading-text">Something went wrong loading places.</p>';
+            }
+        }
+
+        function openPlaceModal(place, icon) {
+            const modal = document.getElementById('place-modal');
+            const imageContainer = document.getElementById('modal-image-container');
+
+            if (place.image) {
+                imageContainer.innerHTML = `<img src="${place.image}" alt="${place.name}" onerror="this.parentElement.innerHTML='<div class=\\'modal-no-photo\\'><span>${icon}</span><p>No photo available</p></div>'">`;
+            } else {
+                imageContainer.innerHTML = `<div class="modal-no-photo"><span>${icon}</span><p>No photo available</p></div>`;
+            }
+
+            document.getElementById('modal-name').textContent = place.name;
+            document.getElementById('modal-address').textContent = "📍 " + place.address;
+            document.getElementById('modal-phone').textContent = "📞 " + place.phone;
+
+            modal.style.display = 'flex';
+        }
+
+        document.getElementById('modal-close').addEventListener('click', () => {
+            document.getElementById('place-modal').style.display = 'none';
+        });
+
+        document.getElementById('place-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'place-modal') {
+                document.getElementById('place-modal').style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>

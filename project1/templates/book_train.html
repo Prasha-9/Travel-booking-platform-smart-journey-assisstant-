@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Train Ticket - Smart Assistant Booking Platform</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/book_train.css' %}">
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">Smart Assistant Booking Platform</div>
+        <div class="navbar">
+            <a href="{% url 'customer_dashboard' %}">Dashboard</a>
+            <a href="{% url 'profile' %}">Profile</a>
+        </div>
+    </div>
+
+    <div class="booking-form-section">
+        <div class="booking-form-box">
+
+            <h2>Book Train Ticket</h2>
+            <p class="form-subtitle">Demo booking — for project showcase purposes only</p>
+
+            <form method="POST" action="{% url 'book_train' %}" id="booking-form">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Passenger Name</label>
+                        <input type="text" name="passenger_name" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Age</label>
+                        <input type="number" name="age" min="1" max="120" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Gender</label>
+                        <select name="gender" required>
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>From (Source Station)</label>
+                        <select id="source" name="source" required>
+                            <option value="">Select station</option>
+                            {% for station in stations %}
+                                <option value="{{ station }}">{{ station }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label>To (Destination Station)</label>
+                        <select id="destination" name="destination" required>
+                            <option value="">Select station</option>
+                            {% for station in stations %}
+                                <option value="{{ station }}">{{ station }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Journey Date</label>
+                        <input type="date" name="journey_date" id="journey_date" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Class</label>
+                        <select name="seat_class" id="seat_class" required>
+                            <option value="">Select</option>
+                            <option value="Sleeper (SL)">Sleeper (SL)</option>
+                            <option value="AC 3 Tier">AC 3 Tier</option>
+                            <option value="AC 2 Tier">AC 2 Tier</option>
+                            <option value="AC First Class">AC First Class</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="train-list-section" style="display:none;">
+                    <h3>Available Trains</h3>
+                    <div id="train-list"></div>
+                </div>
+
+                <div id="fare-display" class="fare-display" style="display:none;"></div>
+
+                <input type="hidden" name="train_name" id="train_name" required>
+                <input type="hidden" name="train_number" id="train_number" required>
+                <input type="hidden" name="departure_time" id="departure_time" required>
+                <input type="hidden" name="total_amount" id="total_amount">
+
+                <button type="submit" class="search-btn">Confirm Booking</button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-bottom">
+            <p>&copy; 2026 Smart Assistant Booking Platform — Demo project, not affiliated with IRCTC or Indian Railways.</p>
+        </div>
+    </div>
+
+    <script>
+        const dateInput = document.getElementById('journey_date');
+        dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+
+        let selectedFare = 0;
+        let classMultipliers = {};
+
+        document.getElementById('source').addEventListener('change', checkAndLoadTrains);
+        document.getElementById('destination').addEventListener('change', checkAndLoadTrains);
+        document.getElementById('journey_date').addEventListener('change', checkAndLoadTrains);
+        document.getElementById('seat_class').addEventListener('change', updateFareDisplay);
+
+        async function checkAndLoadTrains() {
+            const source = document.getElementById('source').value;
+            const destination = document.getElementById('destination').value;
+            const date = document.getElementById('journey_date').value;
+
+            const section = document.getElementById('train-list-section');
+            const list = document.getElementById('train-list');
+            const fareBox = document.getElementById('fare-display');
+
+            fareBox.style.display = 'none';
+            selectedFare = 0;
+
+            if (!source || !destination || !date) {
+                section.style.display = 'none';
+                return;
+            }
+
+            if (source === destination) {
+                section.style.display = 'block';
+                list.innerHTML = '<p>Source and destination cannot be the same.</p>';
+                return;
+            }
+
+            const res = await fetch(`/search-trains/?source=${encodeURIComponent(source)}&destination=${encodeURIComponent(destination)}&date=${date}`);
+            const data = await res.json();
+
+            classMultipliers = data.class_multipliers;
+
+            section.style.display = 'block';
+
+            if (data.trains.length === 0) {
+                list.innerHTML = '<p>No trains found for this route on this date.</p>';
+                return;
+            }
+
+            list.innerHTML = data.trains.map(t => `
+                <div class="train-option" data-name="${t.train_name}" data-number="${t.train_number}" data-time="${t.departure_time}" data-fare="${t.base_fare}">
+                    <strong>${t.train_name} (${t.train_number})</strong><br>
+                    Departure: ${t.departure_time}
+                </div>
+            `).join('');
+
+            list.querySelectorAll('.train-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    document.getElementById('train_name').value = opt.dataset.name;
+                    document.getElementById('train_number').value = opt.dataset.number;
+                    document.getElementById('departure_time').value = opt.dataset.time;
+                    selectedFare = parseFloat(opt.dataset.fare);
+
+                    list.querySelectorAll('.train-option').forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+
+                    updateFareDisplay();
+                });
+            });
+        }
+
+        function updateFareDisplay() {
+            const seatClass = document.getElementById('seat_class').value;
+            const fareBox = document.getElementById('fare-display');
+
+            if (!selectedFare || !seatClass) {
+                fareBox.style.display = 'none';
+                return;
+            }
+
+            const multiplier = classMultipliers[seatClass] || 1;
+            const totalFare = Math.round(selectedFare * multiplier);
+
+            document.getElementById('total_amount').value = totalFare;
+            fareBox.style.display = 'block';
+            fareBox.innerHTML = `Total Fare: ₹${totalFare}`;
+        }
+
+        document.getElementById('booking-form').addEventListener('submit', (e) => {
+            if (!document.getElementById('train_number').value) {
+                e.preventDefault();
+                alert('Please select a train from the list before confirming.');
+            } else if (!document.getElementById('total_amount').value) {
+                e.preventDefault();
+                alert('Please select a class to calculate fare.');
+            }
+        });
+    </script>
+
+</body>
+</html>

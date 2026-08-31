@@ -1,0 +1,390 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Tracking - Smart Journey Assistant</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/live_tracking.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">Smart Journey Assistant</div>
+        <div class="navbar">
+            <a href="{% url 'customer_dashboard' %}">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="tracking-section">
+
+        <h2>Live Journey Tracking</h2>
+
+        <div class="ticket-summary">
+            <div class="ticket-summary-row">
+                <span class="row-label">Train Name</span>
+                <strong id="train-name-display" class="row-value">Loading...</strong>
+            </div>
+            <div class="ticket-summary-row">
+                <span class="row-label">Train Number</span>
+                <strong class="row-value">{{ ticket.train_number }}</strong>
+            </div>
+            {% if ticket.pnr_number %}
+            <div class="ticket-summary-row">
+                <span class="row-label">PNR</span>
+                <strong class="row-value">{{ ticket.pnr_number }}</strong>
+            </div>
+            {% endif %}
+            <div class="ticket-summary-row">
+                <span class="row-label">Boarding Station</span>
+                <strong class="row-value">{{ ticket.source_station }}</strong>
+            </div>
+            <div class="ticket-summary-row">
+                <span class="row-label">Destination</span>
+                <strong id="destination-display" class="row-value">{{ ticket.destination_station|default:"Loading..." }}</strong>
+            </div>
+            {% if ticket.departure_time %}
+            <div class="ticket-summary-row">
+                <span class="row-label">Scheduled Departure</span>
+                <strong class="row-value">{{ ticket.departure_time }}</strong>
+            </div>
+            {% endif %}
+
+            {% if ticket.format_valid is not None %}
+                {% if ticket.format_valid %}
+                    <div class="status-badge status-valid">✓ Ticket format looks valid</div>
+                {% else %}
+                    <div class="status-badge status-warning">⚠ Ticket format could not be fully verified</div>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div id="train-status-box" class="train-status-box">
+            <p class="loading-text">Loading live train status...</p>
+        </div>
+
+        <div id="eta-box" class="train-status-box" style="display:none;">
+            <h3>Estimated Arrival at Destination</h3>
+            <p id="eta-text" class="loading-text">Calculating...</p>
+        </div>
+
+        <div id="distance-box" class="distance-box" style="display:none;">
+            <h3>Your Distance to Station</h3>
+            <p id="distance-text">Detecting your location...</p>
+            <div id="reach-status" class="status-badge" style="display:none;"></div>
+            <button id="enable-tracking-btn" class="search-btn">Enable Live Location Tracking</button>
+        </div>
+
+        <div id="map"></div>
+
+        <div id="alert-log" class="alert-log"></div>
+
+    </div>
+
+    <script>
+        const trainNumber = "{{ ticket.train_number }}";
+        const sourceStation = "{{ ticket.source_station }}";
+        const scheduledDeparture = "{{ ticket.departure_time }}";
+
+        let map = null;
+        let stationMarker = null;
+        let userMarker = null;
+        let stationCoords = null;
+        let liveDelayMinutes = 0;
+
+        let hasAlertedNear = false;
+        let hasAlerted15 = false;
+        let hasAlerted5 = false;
+        let hasAlertedDeparted = false;
+
+        function playBeep(frequency = 880, duration = 300) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                oscillator.frequency.value = frequency;
+                oscillator.type = "sine";
+                gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration / 1000);
+                oscillator.start();
+                oscillator.stop(ctx.currentTime + duration / 1000);
+            } catch (e) {
+                console.log("Audio not supported:", e);
+            }
+        }
+
+        function logAlert(message) {
+            const log = document.getElementById('alert-log');
+            const entry = document.createElement('div');
+            entry.className = 'alert-entry';
+            entry.textContent = `${new Date().toLocaleTimeString()} — ${message}`;
+            log.prepend(entry);
+        }
+
+        function haversineDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function estimateETA(distanceKm) {
+            const avgSpeedKmph = 30;
+            const timeMinutes = Math.round((distanceKm / avgSpeedKmph) * 60);
+            if (timeMinutes < 1) return "Less than a minute";
+            if (timeMinutes < 60) return `${timeMinutes} min`;
+            const hours = Math.floor(timeMinutes / 60);
+            const mins = timeMinutes % 60;
+            return `${hours}h ${mins}m`;
+        }
+
+        function checkReachVsDeparture(etaText) {
+            if (!scheduledDeparture || scheduledDeparture === "None") return;
+
+            document.getElementById('reach-status').style.display = 'inline-block';
+
+            let etaMinutesNumeric = 0;
+            const hourMatch = etaText.match(/(\d+)h/);
+            const minMatch = etaText.match(/(\d+)m/) || etaText.match(/(\d+) min/);
+            if (hourMatch) etaMinutesNumeric += parseInt(hourMatch[1]) * 60;
+            if (minMatch) etaMinutesNumeric += parseInt(minMatch[1]);
+
+            const now = new Date();
+            const [hh, mm] = scheduledDeparture.split(':').map(Number);
+            const departureTime = new Date();
+            departureTime.setHours(hh, mm, 0, 0);
+
+            const minutesUntilDeparture = (departureTime - now) / 60000;
+            const buffer = minutesUntilDeparture - etaMinutesNumeric;
+
+            const reachStatusBox = document.getElementById('reach-status');
+
+            if (buffer > 10) {
+                reachStatusBox.className = 'status-badge status-ok';
+                reachStatusBox.textContent = `✓ You're on track to make it comfortably.`;
+            } else if (buffer > 0) {
+                reachStatusBox.className = 'status-badge status-warning';
+                reachStatusBox.textContent = `⚠ Cutting it close — you may just make it.`;
+            } else {
+                reachStatusBox.className = 'status-badge status-danger';
+                reachStatusBox.textContent = `⚠ You may not reach in time based on current pace.`;
+            }
+        }
+
+        async function fetchTrainStatus() {
+            const box = document.getElementById('train-status-box');
+
+            try {
+                const res = await fetch(`/live-train-status/?train_number=${trainNumber}`);
+                const data = await res.json();
+
+                if (data.error || !data.success) {
+                    box.innerHTML = `<p class="loading-text">Could not fetch live status: ${data.error || 'No live data for this train right now.'}</p>`;
+                    return;
+                }
+
+                const trainData = data.data || {};
+                const status = trainData.status || "unknown";
+                const delay = trainData.delayMinutes || 0;
+                const trainName = trainData.trainName || "Train";
+                const destination = trainData.train && trainData.train.destination ? trainData.train.destination.name : null;
+                const currentLocation = trainData.currentLocation || {};
+                const nextHalt = trainData.nextHalt || {};
+                const speed = currentLocation.speedKmh;
+
+                liveDelayMinutes = delay;
+
+                const nameDisplay = document.getElementById('train-name-display');
+                if (nameDisplay) nameDisplay.textContent = trainName;
+
+                const destDisplay = document.getElementById('destination-display');
+                if (destDisplay && destination) destDisplay.textContent = destination;
+
+                let statusClass = "status-ok";
+                let statusText = "Running on time";
+
+                if (delay > 0) {
+                    statusClass = delay > 30 ? "status-danger" : "status-warning";
+                    statusText = `Running, delayed by ${delay} minutes`;
+                } else if (status !== "running") {
+                    statusText = `Status: ${status}`;
+                }
+
+                box.innerHTML = `
+                    <h3>${trainName} (${trainNumber})</h3>
+                    <div class="status-badge ${statusClass}">${statusText}</div>
+                    ${currentLocation.stationCode ? `<p class="status-meta">Current location: ${currentLocation.stationCode} (${currentLocation.status || ''})</p>` : ''}
+                    ${speed ? `<p class="status-meta">Speed: ${speed} km/h</p>` : ''}
+                    ${nextHalt.stationName ? `<p class="status-meta">Next halt: ${nextHalt.stationName}</p>` : ''}
+                    <p class="status-meta">Last updated: ${new Date().toLocaleTimeString()}</p>
+                `;
+
+            } catch (e) {
+                box.innerHTML = `<p class="loading-text">Error loading train status.</p>`;
+            }
+        }
+
+        async function fetchTrainETA() {
+            const etaBox = document.getElementById('eta-box');
+            const etaText = document.getElementById('eta-text');
+
+            try {
+                const res = await fetch(`/train-eta/?train_number=${trainNumber}`);
+                const data = await res.json();
+
+                if (data.error || !data.success) {
+                    etaBox.style.display = 'none';
+                    return;
+                }
+
+                const halts = (data.data && data.data.halts) || data.data || [];
+                const haltList = Array.isArray(halts) ? halts : (halts.halts || []);
+
+                if (haltList.length === 0) {
+                    etaBox.style.display = 'none';
+                    return;
+                }
+
+                const lastHalt = haltList[haltList.length - 1];
+                const scheduledArrival = lastHalt.arrivalTime || lastHalt.scheduledArrival;
+
+                etaBox.style.display = 'block';
+
+                if (scheduledArrival) {
+                    etaText.textContent = liveDelayMinutes > 0
+                        ? `Scheduled ${scheduledArrival}, running ~${liveDelayMinutes} min late`
+                        : `Scheduled ${scheduledArrival}, currently on time`;
+                } else {
+                    etaText.textContent = "Arrival time not available for this train.";
+                }
+
+            } catch (e) {
+                etaBox.style.display = 'none';
+            }
+        }
+
+        async function fetchStationCoordinates() {
+            try {
+                const res = await fetch(`/station-coordinates/?station=${encodeURIComponent(sourceStation)}`);
+                const data = await res.json();
+
+                if (data.error) {
+                    document.getElementById('distance-text').textContent =
+                        "Station coordinates not available for distance tracking.";
+                    return;
+                }
+
+                stationCoords = data;
+                initMap();
+
+            } catch (e) {
+                document.getElementById('distance-text').textContent = "Could not load station data.";
+            }
+        }
+
+        function initMap() {
+            if (!stationCoords) return;
+
+            map = L.map('map').setView([stationCoords.lat, stationCoords.lon], 12);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            stationMarker = L.marker([stationCoords.lat, stationCoords.lon], {
+                icon: L.divIcon({ className: 'station-marker', html: '🚉', iconSize: [30, 30] })
+            }).addTo(map).bindPopup(sourceStation);
+
+            document.getElementById('distance-box').style.display = 'block';
+        }
+
+        function checkDepartureCountdown() {
+            if (!scheduledDeparture || scheduledDeparture === "None") return;
+
+            const now = new Date();
+            const [hh, mm] = scheduledDeparture.split(':').map(Number);
+            const departureTime = new Date();
+            departureTime.setHours(hh, mm, 0, 0);
+
+            const diffMinutes = (departureTime - now) / 60000;
+
+            if (diffMinutes <= 15 && diffMinutes > 5 && !hasAlerted15) {
+                hasAlerted15 = true;
+                playBeep(660, 400);
+                logAlert("⏰ 15 minutes until scheduled departure.");
+            }
+            if (diffMinutes <= 5 && diffMinutes > 0 && !hasAlerted5) {
+                hasAlerted5 = true;
+                playBeep(880, 500);
+                logAlert("⚠️ 5 minutes until scheduled departure!");
+            }
+            if (diffMinutes <= 0 && !hasAlertedDeparted) {
+                hasAlertedDeparted = true;
+                playBeep(220, 700);
+                logAlert("🚆 Scheduled departure time has passed.");
+            }
+        }
+
+        document.getElementById('enable-tracking-btn').addEventListener('click', () => {
+            if (!navigator.geolocation) {
+                document.getElementById('distance-text').textContent = "Geolocation not supported by your browser.";
+                return;
+            }
+
+            navigator.geolocation.watchPosition(
+                (position) => {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+
+                    if (userMarker) map.removeLayer(userMarker);
+
+                    userMarker = L.marker([userLat, userLon], {
+                        icon: L.divIcon({ className: 'you-marker', html: '📍', iconSize: [30, 30] })
+                    }).addTo(map).bindPopup("You");
+
+                    if (stationCoords) {
+                        const distance = haversineDistance(userLat, userLon, stationCoords.lat, stationCoords.lon);
+                        const etaMinutes = estimateETA(distance);
+
+                        document.getElementById('distance-text').innerHTML =
+                            `${distance.toFixed(2)} km from ${sourceStation}<br>` +
+                            `<span class="eta-text">Estimated time to reach: ${etaMinutes}</span>`;
+
+                        checkReachVsDeparture(etaMinutes);
+
+                        if (distance <= 0.3 && !hasAlertedNear) {
+                            hasAlertedNear = true;
+                            playBeep(660, 500);
+                            logAlert(`✅ You've arrived near ${sourceStation}!`);
+                        }
+                    }
+                },
+                () => {
+                    document.getElementById('distance-text').textContent = "Could not get your location.";
+                },
+                { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
+            );
+
+            document.getElementById('enable-tracking-btn').textContent = "Live Tracking Active";
+            document.getElementById('enable-tracking-btn').disabled = true;
+        });
+
+        fetchTrainStatus();
+        fetchTrainETA();
+        fetchStationCoordinates();
+        setInterval(fetchTrainStatus, 60000);
+        setInterval(fetchTrainETA, 60000);
+        setInterval(checkDepartureCountdown, 30000);
+        checkDepartureCountdown();
+    </script>
+
+</body>
+</html>

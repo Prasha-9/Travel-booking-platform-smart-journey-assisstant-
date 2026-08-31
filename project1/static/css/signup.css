@@ -1,0 +1,537 @@
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: beige;
+    color: #111111;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+    height: 70px;
+
+    background-color: #111111;
+    color: beige;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 75px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+
+/* Logo */
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #38BDF8;
+}
+
+
+/* Navigation */
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.navbar a {
+    text-decoration: none;
+
+    color: beige;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    padding: 10px 5px;
+
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    color: #38BDF8;
+}
+
+.navbar a.active {
+    color: #38BDF8;
+}
+
+
+/* =========================================
+   SIGNUP SECTION
+========================================= */
+
+.signup-section {
+    min-height: calc(100vh - 70px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 60px 20px;
+
+    background-color: beige;
+}
+
+
+/* =========================================
+   SIGNUP CONTAINER
+========================================= */
+
+.signup-container {
+    width: 100%;
+    max-width: 650px;
+
+    background-color: beige;
+
+    padding: 45px 50px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================
+   SIGNUP HEADING
+========================================= */
+
+.signup-heading {
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+.signup-heading h1 {
+    color: #111111;
+
+    font-size: 32px;
+
+    margin-bottom: 12px;
+}
+
+.signup-heading h1::after {
+    content: "";
+
+    display: block;
+
+    width: 60px;
+    height: 3px;
+
+    background-color: #38BDF8;
+
+    margin: 12px auto 0;
+}
+
+.signup-heading p {
+    color: #555555;
+
+    font-size: 15px;
+
+    margin-top: 15px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.signup-form {
+    width: 100%;
+}
+
+
+/* Form Group */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   LABEL
+========================================= */
+
+.form-group label {
+    display: block;
+
+    color: #111111;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+
+/* =========================================
+   INPUT / SELECT / TEXTAREA
+========================================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 75%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #555555;
+
+    border-radius: 6px;
+
+    background-color: beige;
+
+    color: #111111;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 14px;
+
+    transition: 0.3s;
+}
+
+
+/* Input focus */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    outline: none;
+
+    border: 2px solid #38BDF8;
+
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.35);
+}
+
+
+/* Placeholder */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+
+    color: #888888;
+}
+
+
+/* Textarea */
+
+.form-group textarea {
+
+    min-height: 90px;
+
+    resize: vertical;
+}
+
+
+/* Select */
+
+.form-group select {
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+   ROLE INFORMATION
+========================================= */
+
+.form-group small {
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: #666666;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   SIGNUP BUTTON
+========================================= */
+
+.signup-btn {
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin-top: 8px;
+
+    border: 2px solid #111111;
+
+    border-radius: 6px;
+
+    background-color: #111111;
+
+    color: beige;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.signup-btn:hover {
+
+    background-color: #38BDF8;
+
+    color: #111111;
+
+    border-color: #38BDF8;
+}
+
+
+/* =========================================
+   LOGIN LINK
+========================================= */
+
+.login-link {
+
+    text-align: center;
+
+    margin-top: 22px;
+
+    color: #555555;
+
+    font-size: 14px;
+}
+
+.login-link a {
+
+    color: #111111;
+
+    font-weight: bold;
+
+    text-decoration: none;
+
+    transition: 0.3s;
+}
+
+.login-link a:hover {
+
+    color: #38BDF8;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+
+    background-color: #111111;
+
+    color: beige;
+}
+
+
+/* Footer content */
+
+.footer-content {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 40px;
+
+    padding: 50px 75px;
+}
+
+
+/* Footer sections */
+
+.footer-section {
+
+    width: 23%;
+}
+
+.footer-section h3 {
+
+    color: #38BDF8;
+
+    font-size: 18px;
+
+    margin-bottom: 15px;
+}
+
+.footer-section p {
+
+    color: beige;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    margin-bottom: 7px;
+}
+
+
+/* Footer links */
+
+.footer-section a {
+
+    display: block;
+
+    color: beige;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    margin-bottom: 9px;
+
+    transition: 0.3s;
+}
+
+.footer-section a:hover {
+
+    color: #38BDF8;
+
+    padding-left: 4px;
+}
+
+
+/* =========================================
+   FOOTER BOTTOM
+========================================= */
+
+.footer-bottom {
+
+    text-align: center;
+
+    border-top: 1px solid #333333;
+
+    padding: 18px;
+}
+
+.footer-bottom p {
+
+    color: #aaaaaa;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    .header {
+
+        padding: 0 30px;
+    }
+
+    .signup-container {
+
+        max-width: 600px;
+    }
+
+    .footer-content {
+
+        flex-wrap: wrap;
+    }
+
+    .footer-section {
+
+        width: 45%;
+    }
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+
+        height: auto;
+
+        flex-direction: column;
+
+        padding: 20px;
+
+        gap: 15px;
+    }
+
+
+    .navbar {
+
+        gap: 15px;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+
+    .signup-section {
+
+        padding: 35px 15px;
+    }
+
+
+    .signup-container {
+
+        padding: 30px 20px;
+    }
+
+
+    .signup-heading h1 {
+
+        font-size: 26px;
+    }
+
+
+    .footer-content {
+
+        flex-direction: column;
+
+        padding: 40px 30px;
+    }
+
+
+    .footer-section {
+
+        width: 100%;
+    }
+}

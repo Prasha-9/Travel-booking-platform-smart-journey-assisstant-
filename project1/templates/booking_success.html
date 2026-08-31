@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmed - Smart Assistant Booking Platform</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/book_train.css' %}">
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">Smart Assistant Booking Platform</div>
+        <div class="navbar">
+            <a href="{% url 'customer_dashboard' %}">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="booking-form-section">
+        <div class="booking-form-box success-box">
+
+            <div class="success-icon">✔</div>
+            <h2>Booking Confirmed</h2>
+
+            <p class="form-subtitle">
+                Thank you, {{ passenger_name }}. Your e-ticket has been generated and sent to your registered email.
+            </p>
+
+            <div class="pnr-display">
+                <span>PNR Number</span>
+                <strong>{{ pnr }}</strong>
+            </div>
+
+            <p class="demo-note">
+                This is a demo ticket for project showcase purposes only — not valid for actual travel.
+            </p>
+
+            <a href="{% url 'customer_dashboard' %}" class="signup-button">Back to Dashboard</a>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-bottom">
+            <p>&copy; 2026 Smart Assistant Booking Platform — Demo project, not affiliated with IRCTC or Indian Railways.</p>
+        </div>
+    </div>
+
+</body>
+</html>

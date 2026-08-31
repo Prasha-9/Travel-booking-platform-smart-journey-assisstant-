@@ -1,0 +1,268 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Provider Profile</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/provider_profile.css' %}">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        Smart Journey Assistant
+    </div>
+
+    <nav class="navbar">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'provider_dashboard' %}">
+            Provider Dashboard
+        </a>
+
+        <a href="{% url 'provider_profile' %}">
+            Profile
+        </a>
+
+        <a href="{% url 'login' %}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="profile-container">
+
+    <section class="profile-card">
+
+        <div class="profile-header">
+
+            <div class="profile-icon">
+                👤
+            </div>
+
+            <h1>Provider Profile</h1>
+
+            <p>
+                Your account information
+            </p>
+
+        </div>
+
+
+        {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        {% if provider %}
+
+        <div class="profile-details">
+
+            <div class="detail-item">
+                <span class="label">User ID</span>
+                <span class="value">
+                    {{ provider.user_id }}
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="label">Name</span>
+                <span class="value">
+                    {{ provider.name }}
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="label">Email</span>
+                <span class="value">
+                    {{ provider.email }}
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="label">Phone</span>
+                <span class="value">
+                    {{ provider.phone }}
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="label">Location</span>
+                <span class="value">
+                    {{ provider.location }}
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="label">Zipcode</span>
+                <span class="value">
+                    {{ provider.zipcode }}
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="label">Gender</span>
+                <span class="value">
+                    {{ provider.gender }}
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="label">Date of Birth</span>
+                <span class="value">
+                    {{ provider.dob }}
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="label">Role</span>
+                <span class="value role-badge">
+                    {{ provider.role }}
+                </span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="label">Member Since</span>
+                <span class="value">
+                    {{ provider.created_at }}
+                </span>
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <div class="footer-section">
+
+            <h3>
+                Smart Journey Assistant
+            </h3>
+
+            <p>
+                Your smart companion for planning,
+                booking and managing your journey.
+            </p>
+
+        </div>
+
+
+        <div class="footer-section">
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'provider_dashboard' %}">
+                Provider Dashboard
+            </a>
+
+            <a href="{% url 'provider_profile' %}">
+                Profile
+            </a>
+
+        </div>
+
+
+        <div class="footer-section">
+
+            <h3>
+                Provider
+            </h3>
+
+            <p>
+                Manage your services
+            </p>
+
+            <p>
+                View your profile
+            </p>
+
+            <p>
+                Manage bookings
+            </p>
+
+        </div>
+
+
+        <div class="footer-section">
+
+            <h3>
+                Contact Us
+            </h3>
+
+            <p>
+                Email:
+                peerappagariprashanthi@gmail.com
+            </p>
+
+            <p>
+                Phone: +91 7993864213
+            </p>
+
+            <p>
+                India
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Smart Journey Assistant.
+            All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,557 @@
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: beige;
+    color: #111111;
+
+    /* Prevent horizontal movement */
+    overflow-x: hidden;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.dashboard-header {
+
+    height: 70px;
+
+    background-color: #111111;
+    color: beige;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 75px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.logo {
+
+    font-size: 24px;
+    font-weight: bold;
+
+    color: #38BDF8;
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.navbar {
+
+    display: flex;
+    align-items: center;
+
+    gap: 30px;
+}
+
+.navbar a {
+
+    text-decoration: none;
+
+    color: beige;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    padding: 10px 5px;
+
+    transition: 0.3s;
+}
+
+
+/* Hover */
+
+.navbar a:hover {
+
+    color: #38BDF8;
+}
+
+
+/* Active Dashboard */
+
+.navbar a.active {
+
+    color: #38BDF8;
+}
+
+
+/* =========================================
+   MAIN DASHBOARD
+========================================= */
+
+.dashboard-container {
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding: 60px 30px;
+}
+
+
+/* =========================================
+   WELCOME SECTION
+========================================= */
+
+.welcome-section {
+
+    text-align: center;
+
+    margin-bottom: 45px;
+}
+
+.welcome-section h1 {
+
+    color: #111111;
+
+    font-size: 34px;
+
+    margin-bottom: 12px;
+}
+
+.welcome-section h1::after {
+
+    content: "";
+
+    display: block;
+
+    width: 60px;
+    height: 3px;
+
+    background-color: #38BDF8;
+
+    margin: 12px auto 0;
+}
+
+.welcome-section p {
+
+    color: #555555;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    margin-top: 15px;
+}
+
+
+/* =========================================
+   SEARCH SECTION
+========================================= */
+
+.search-section {
+
+    background-color: beige;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.10);
+
+    margin-bottom: 45px;
+
+    text-align: center;
+}
+
+.search-section h2 {
+
+    color: #111111;
+
+    font-size: 23px;
+
+    margin-bottom: 20px;
+}
+
+
+/* Search Form */
+
+.search-section form {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+}
+
+
+/* Search Input */
+
+.search-section input {
+
+    width: 70%;
+
+    max-width: 650px;
+
+    padding: 13px 15px;
+
+    border: 1px solid #555555;
+
+    border-radius: 6px;
+
+    background-color: beige;
+
+    color: #111111;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.3s;
+}
+
+.search-section input:focus {
+
+    border-color: #38BDF8;
+
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+}
+
+.search-section input::placeholder {
+
+    color: #888888;
+}
+
+
+/* Search Button */
+
+.search-section button {
+
+    padding: 13px 30px;
+
+    border: 2px solid #111111;
+
+    border-radius: 6px;
+
+    background-color: #111111;
+
+    color: beige;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.search-section button:hover {
+
+    background-color: #38BDF8;
+
+    color: #111111;
+
+    border-color: #38BDF8;
+}
+
+
+/* =========================================
+   DASHBOARD CARDS
+========================================= */
+
+.dashboard-cards {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
+
+    width: 100%;
+}
+
+
+/* =========================================
+   DASHBOARD CARD
+========================================= */
+
+.dashboard-card {
+
+    width: 350px;
+
+    min-height: 240px;
+
+    background-color: beige;
+
+    padding: 30px 25px;
+
+    border-radius: 12px;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+    text-align: center;
+
+    transition: 0.3s;
+}
+
+
+/* Card Hover */
+
+.dashboard-card:hover {
+
+    transform: translateY(-7px);
+
+    border-color: #38BDF8;
+
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.20);
+}
+
+
+/* =========================================
+   CARD ICON
+========================================= */
+
+.card-icon {
+
+    font-size: 40px;
+
+    margin-bottom: 15px;
+}
+
+
+/* =========================================
+   CARD TITLE
+========================================= */
+
+.dashboard-card h3 {
+
+    color: #111111;
+
+    font-size: 20px;
+
+    margin-bottom: 12px;
+}
+
+
+/* =========================================
+   CARD DESCRIPTION
+========================================= */
+
+.dashboard-card p {
+
+    color: #555555;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   CARD LINK
+========================================= */
+
+.dashboard-card a {
+
+    display: inline-block;
+
+    padding: 10px 22px;
+
+    background-color: #111111;
+
+    color: beige;
+
+    border: 2px solid #111111;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.dashboard-card a:hover {
+
+    background-color: #38BDF8;
+
+    color: #111111;
+
+    border-color: #38BDF8;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.dashboard-footer {
+
+    background-color: #111111;
+
+    color: beige;
+
+    text-align: center;
+
+    border-top: 1px solid #333333;
+
+    padding: 20px;
+}
+
+.dashboard-footer p {
+
+    color: #aaaaaa;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    .dashboard-header {
+
+        padding: 0 30px;
+    }
+
+    .dashboard-container {
+
+        padding: 50px 25px;
+    }
+
+    .dashboard-card {
+
+        width: 45%;
+    }
+
+    .search-section form {
+
+        flex-direction: column;
+    }
+
+    .search-section input {
+
+        width: 100%;
+        max-width: none;
+    }
+
+    .search-section button {
+
+        width: 100%;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .dashboard-header {
+
+        height: auto;
+
+        flex-direction: column;
+
+        padding: 20px;
+
+        gap: 15px;
+    }
+
+
+    .logo {
+
+        font-size: 21px;
+
+        text-align: center;
+    }
+
+
+    .navbar {
+
+        gap: 15px;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+
+    .dashboard-container {
+
+        padding: 40px 15px;
+    }
+
+
+    .welcome-section h1 {
+
+        font-size: 27px;
+    }
+
+
+    .search-section {
+
+        padding: 25px 20px;
+    }
+
+
+    .search-section h2 {
+
+        font-size: 20px;
+    }
+
+
+    .dashboard-card {
+
+        width: 100%;
+
+        min-height: auto;
+    }
+
+
+    .dashboard-footer {
+
+        padding: 18px 15px;
+    }
+}

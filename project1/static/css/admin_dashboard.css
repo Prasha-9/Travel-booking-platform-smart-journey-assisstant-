@@ -1,0 +1,637 @@
+
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+
+    background-color: beige;
+
+    color: #111111;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+
+    height: 70px;
+
+    background-color: #111111;
+
+    color: beige;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 70px;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.2);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+}
+
+
+/* Logo */
+
+.logo {
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    color: #38BDF8;
+}
+
+
+/* Navigation */
+
+.navbar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+.navbar a {
+
+    text-decoration: none;
+
+    color: beige;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+
+    color: #38BDF8;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.admin-container {
+
+    width: 90%;
+
+    max-width: 1400px;
+
+    margin: 40px auto 70px;
+}
+
+
+/* =========================================
+   WELCOME SECTION
+========================================= */
+
+.admin-welcome {
+
+    background:
+        linear-gradient(
+            135deg,
+            #111111,
+            #1e293b
+        );
+
+    color: beige;
+
+    padding: 45px 40px;
+
+    border-radius: 12px;
+
+    margin-bottom: 35px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.admin-welcome h1 {
+
+    font-size: 36px;
+
+    color: #38BDF8;
+
+    margin-bottom: 10px;
+}
+
+.admin-welcome p {
+
+    font-size: 17px;
+
+    color: beige;
+}
+
+
+/* =========================================
+   ADMIN SECTION
+========================================= */
+
+.admin-section {
+
+    background-color: beige;
+
+    margin-bottom: 40px;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow:
+        0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Section Heading */
+
+.section-heading {
+
+    margin-bottom: 25px;
+
+    border-bottom:
+        2px solid #38BDF8;
+
+    padding-bottom: 15px;
+}
+
+.section-heading h2 {
+
+    font-size: 27px;
+
+    color: #111111;
+
+    margin-bottom: 7px;
+}
+
+.section-heading p {
+
+    font-size: 14px;
+
+    color: #555555;
+}
+
+
+/* =========================================
+   TABLE CONTAINER
+========================================= */
+
+.table-container {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    border-radius: 8px;
+
+    border: 1px solid #ddd;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+table {
+
+    width: 100%;
+
+    min-width: 1100px;
+
+    border-collapse: collapse;
+
+    background-color: beige;
+}
+
+
+/* Table Header */
+
+thead {
+
+    background-color: #111111;
+
+    color: beige;
+}
+
+thead th {
+
+    padding: 14px 12px;
+
+    text-align: left;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    white-space: nowrap;
+
+    border-right:
+        1px solid #333333;
+}
+
+
+/* Table Body */
+
+tbody td {
+
+    padding: 13px 12px;
+
+    font-size: 13px;
+
+    color: #333333;
+
+    border-bottom:
+        1px solid #dddddd;
+
+    border-right:
+        1px solid #eeeeee;
+
+    vertical-align: middle;
+}
+
+
+/* Alternating Rows */
+
+tbody tr:nth-child(even) {
+
+    background-color: #f5f5dc;
+}
+
+
+/* Hover */
+
+tbody tr:hover {
+
+    background-color: #eef9fd;
+}
+
+
+/* =========================================
+   UPDATE BUTTON
+========================================= */
+
+.update-btn {
+
+    display: inline-block;
+
+    padding: 8px 14px;
+
+    background-color: #38BDF8;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    border-radius: 5px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+
+    white-space: nowrap;
+}
+
+.update-btn:hover {
+
+    background-color: #0284C7;
+
+    color: beige;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   DELETE BUTTON
+========================================= */
+
+.delete-btn {
+
+    padding: 8px 14px;
+
+    background-color: #dc2626;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+
+    white-space: nowrap;
+}
+
+.delete-btn:hover {
+
+    background-color: #b91c1c;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   STATUS BADGES
+========================================= */
+
+.status-badge {
+
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 15px;
+
+    background-color: #dcfce7;
+
+    color: #166534;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    text-transform: capitalize;
+
+    white-space: nowrap;
+}
+
+
+/* Payment Status */
+
+.payment-badge {
+
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 15px;
+
+    background-color: #e0f2fe;
+
+    color: #0369a1;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    text-transform: capitalize;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   EMPTY MESSAGE
+========================================= */
+
+.empty-message {
+
+    text-align: center;
+
+    padding: 30px !important;
+
+    color: #777777 !important;
+
+    font-size: 14px !important;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+
+    background-color: #111111;
+
+    color: beige;
+
+    margin-top: 0;
+}
+
+
+/* Footer Content */
+
+.footer-content {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 40px;
+
+    padding: 50px 70px;
+}
+
+
+/* Footer Sections */
+
+.footer-section {
+
+    width: 23%;
+}
+
+.footer-section h3 {
+
+    color: #38BDF8;
+
+    font-size: 18px;
+
+    margin-bottom: 15px;
+}
+
+.footer-section p {
+
+    color: beige;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    margin-bottom: 7px;
+}
+
+
+/* Footer Links */
+
+.footer-section a {
+
+    display: block;
+
+    color: beige;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    margin-bottom: 9px;
+
+    transition: 0.3s;
+}
+
+.footer-section a:hover {
+
+    color: #38BDF8;
+
+    padding-left: 3px;
+}
+
+
+/* Footer Bottom */
+
+.footer-bottom {
+
+    text-align: center;
+
+    border-top:
+        1px solid #333333;
+
+    padding: 18px;
+}
+
+.footer-bottom p {
+
+    color: #aaaaaa;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    .header {
+
+        padding: 0 30px;
+    }
+
+    .admin-container {
+
+        width: 94%;
+    }
+
+    .admin-section {
+
+        padding: 20px;
+    }
+
+    .footer-content {
+
+        flex-wrap: wrap;
+    }
+
+    .footer-section {
+
+        width: 45%;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+
+        height: auto;
+
+        flex-direction: column;
+
+        padding: 20px;
+
+        gap: 15px;
+    }
+
+    .navbar {
+
+        gap: 15px;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+    .admin-container {
+
+        width: 94%;
+
+        margin-top: 25px;
+    }
+
+    .admin-welcome {
+
+        padding: 30px 25px;
+    }
+
+    .admin-welcome h1 {
+
+        font-size: 28px;
+    }
+
+    .admin-section {
+
+        padding: 15px;
+    }
+
+    .section-heading h2 {
+
+        font-size: 23px;
+    }
+
+    .footer-content {
+
+        flex-direction: column;
+
+        padding: 40px 30px;
+    }
+
+    .footer-section {
+
+        width: 100%;
+    }
+
+}
+

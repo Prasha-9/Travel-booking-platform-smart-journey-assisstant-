@@ -1,0 +1,202 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Update User</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/admin_dashboard.css' %}">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        Smart Journey Assistant
+    </div>
+
+    <nav class="navbar">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'admin_dashboard' %}">
+            Admin Dashboard
+        </a>
+
+        <a href="{% url 'login' %}">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="admin-container">
+
+    <section class="admin-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Update User
+            </h2>
+
+            <p>
+                Edit the selected user's details.
+            </p>
+
+        </div>
+
+
+        <div class="update-form-container">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <label>Name</label>
+
+                <input
+                    type="text"
+                    name="name"
+                    value="{{ user.1 }}"
+                    required
+                >
+
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    name="email"
+                    value="{{ user.2 }}"
+                    required
+                >
+
+
+                <label>Phone</label>
+
+                <input
+                    type="text"
+                    name="phone"
+                    value="{{ user.3 }}"
+                >
+
+
+                <label>Location</label>
+
+                <input
+                    type="text"
+                    name="location"
+                    value="{{ user.4 }}"
+                >
+
+
+                <label>Zipcode</label>
+
+                <input
+                    type="text"
+                    name="zipcode"
+                    value="{{ user.5 }}"
+                >
+
+
+                <label>Gender</label>
+
+                <select name="gender">
+
+                    <option value="Male"
+                        {% if user.6 == "Male" %}selected{% endif %}>
+                        Male
+                    </option>
+
+                    <option value="Female"
+                        {% if user.6 == "Female" %}selected{% endif %}>
+                        Female
+                    </option>
+
+                    <option value="Other"
+                        {% if user.6 == "Other" %}selected{% endif %}>
+                        Other
+                    </option>
+
+                </select>
+
+
+                <label>Date of Birth</label>
+
+                <input
+                    type="date"
+                    name="dob"
+                    value="{{ user.7|date:'Y-m-d' }}"
+                >
+
+
+                <label>Role</label>
+
+                <select name="role">
+
+                    <option value="customer"
+                        {% if user.8 == "customer" %}selected{% endif %}>
+                        Customer
+                    </option>
+
+                    <option value="provider"
+                        {% if user.8 == "provider" %}selected{% endif %}>
+                        Provider
+                    </option>
+
+                    <option value="admin"
+                        {% if user.8 == "admin" %}selected{% endif %}>
+                        Admin
+                    </option>
+
+                </select>
+
+
+                <div class="form-buttons">
+
+                    <button
+                        type="submit"
+                        class="update-btn">
+
+                        Save Changes
+
+                    </button>
+
+
+                    <a
+                        href="{% url 'admin_dashboard' %}"
+                        class="delete-btn">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

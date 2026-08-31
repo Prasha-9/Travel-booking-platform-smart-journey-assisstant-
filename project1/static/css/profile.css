@@ -1,0 +1,456 @@
+
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: beige;
+    color: #111111;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.dashboard-header {
+
+    height: 70px;
+
+    background-color: #111111;
+
+    color: beige;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 70px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.logo {
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    color: #38BDF8;
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.navbar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+.navbar a {
+
+    text-decoration: none;
+
+    color: beige;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    padding: 10px 5px;
+
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+
+    color: #38BDF8;
+}
+
+.navbar a.active {
+
+    color: #38BDF8;
+}
+
+
+/* =========================================
+   PROFILE CONTAINER
+========================================= */
+
+.profile-container {
+
+    min-height: calc(100vh - 70px);
+
+    padding: 60px 20px;
+
+    background-color: beige;
+}
+
+
+/* =========================================
+   PROFILE HEADING
+========================================= */
+
+.profile-heading {
+
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+.profile-heading h1 {
+
+    font-size: 32px;
+
+    color: #111111;
+
+    margin-bottom: 10px;
+}
+
+.profile-heading h1::after {
+
+    content: "";
+
+    display: block;
+
+    width: 60px;
+
+    height: 3px;
+
+    background-color: #38BDF8;
+
+    margin: 12px auto 0;
+}
+
+.profile-heading p {
+
+    color: #555555;
+
+    font-size: 15px;
+
+    margin-top: 15px;
+}
+
+
+/* =========================================
+   PROFILE CARD
+========================================= */
+
+.profile-card {
+
+    width: 100%;
+
+    max-width: 700px;
+
+    margin: auto;
+
+    background-color: beige;
+
+    padding: 40px 45px;
+
+    border-radius: 12px;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+    text-align: center;
+}
+
+
+/* =========================================
+   PROFILE ICON
+========================================= */
+
+.profile-icon {
+
+    width: 80px;
+
+    height: 80px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background-color: #111111;
+
+    color: beige;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 38px;
+}
+
+
+/* =========================================
+   PROFILE NAME
+========================================= */
+
+.profile-card h2 {
+
+    color: #111111;
+
+    font-size: 25px;
+
+    margin-bottom: 6px;
+}
+
+.profile-role {
+
+    color: #38BDF8;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    text-transform: capitalize;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================================
+   PROFILE DETAILS
+========================================= */
+
+.profile-details {
+
+    width: 100%;
+
+    text-align: left;
+
+    border-top: 1px solid #d1d5db;
+}
+
+
+/* =========================================
+   DETAIL ROW
+========================================= */
+
+.detail-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 15px 5px;
+
+    border-bottom: 1px solid #d1d5db;
+}
+
+
+/* =========================================
+   LABEL
+========================================= */
+
+.detail-label {
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    color: #111111;
+
+    min-width: 150px;
+}
+
+
+/* =========================================
+   VALUE
+========================================= */
+
+.detail-value {
+
+    font-size: 14px;
+
+    color: #555555;
+
+    text-align: right;
+
+    word-break: break-word;
+}
+
+
+/* =========================================
+   ACTION
+========================================= */
+
+.profile-actions {
+
+    margin-top: 30px;
+}
+
+.profile-actions button {
+
+    padding: 12px 35px;
+
+    border: 2px solid #111111;
+
+    border-radius: 6px;
+
+    background-color: #111111;
+
+    color: beige;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.profile-actions button:hover {
+
+    background-color: #38BDF8;
+
+    color: #111111;
+
+    border-color: #38BDF8;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.dashboard-footer {
+
+    background-color: #111111;
+
+    color: beige;
+
+    text-align: center;
+
+    padding: 18px;
+}
+
+.dashboard-footer p {
+
+    color: #aaaaaa;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    .dashboard-header {
+
+        padding: 0 30px;
+    }
+
+    .profile-card {
+
+        max-width: 650px;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .dashboard-header {
+
+        height: auto;
+
+        flex-direction: column;
+
+        padding: 20px;
+
+        gap: 15px;
+    }
+
+    .logo {
+
+        font-size: 21px;
+
+        text-align: center;
+    }
+
+    .navbar {
+
+        gap: 15px;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+    .profile-container {
+
+        padding: 40px 15px;
+    }
+
+    .profile-card {
+
+        padding: 30px 20px;
+    }
+
+    .profile-heading h1 {
+
+        font-size: 26px;
+    }
+
+    .detail-row {
+
+        flex-direction: column;
+
+        gap: 6px;
+    }
+
+    .detail-value {
+
+        text-align: left;
+    }
+
+    .detail-label {
+
+        min-width: auto;
+    }
+}
+
