@@ -1,7 +1,6 @@
 Django==5.2
 djangorestframework==3.15.2
 mysqlclient==2.2.5
-google-generativeai
 opencv-python-headless==4.13.0.90
 pytesseract==0.3.13
 python-dotenv==1.2.3
