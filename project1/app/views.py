@@ -4,7 +4,6 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import send_mail
 import random
 from django.conf import settings
-import google.generativeai as genai
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
