@@ -349,33 +349,29 @@ def chatbot(request):
         return redirect('login')
 
     if request.method == "POST":
-
         try:
-            body = json.loads(request.body)
-            user_message = body.get("message", "").strip()
-        except (json.JSONDecodeError, AttributeError):
-            user_message = ""
-
-        if not user_message:
-            return JsonResponse({"reply": "Please type a message."})
-
-        genai.configure(api_key=settings.GEMINI_API_KEY)
-
-        try:
-            model = genai.GenerativeModel(
-                "gemini-3.6-flash",
-                system_instruction=(
-                    "You are Smart Journey Assistant, "
-                    "a helpful travel assistant. "
-                    "Help users with travel planning, "
-                    "hotels, transportation, nearby places, "
-                    "trains, maps and general journey questions. "
-                    "Give clear and useful answers."
-                )
+            gemini_url = (
+                "https://generativelanguage.googleapis.com/v1beta/models/"
+                f"gemini-3.6-flash:generateContent?key={settings.GEMINI_API_KEY}"
             )
 
-            ai_response = model.generate_content(user_message)
-            reply = ai_response.text
+            payload = {
+                "systemInstruction": {
+                    "parts": [{"text": (
+                        "You are Smart Journey Assistant, "
+                        "a helpful travel assistant. "
+                        "Help users with travel planning, "
+                        "hotels, transportation, nearby places, "
+                        "trains, maps and general journey questions. "
+                        "Give clear and useful answers."
+                    )}]
+                },
+                "contents": [{"parts": [{"text": user_message}]}]
+            }
+
+            gemini_response = requests.post(gemini_url, json=payload, timeout=20)
+            gemini_data = gemini_response.json()
+            reply = gemini_data["candidates"][0]["content"]["parts"][0]["text"]
 
         except Exception as e:
             reply = f"Sorry, I could not process your request: {str(e)}"
