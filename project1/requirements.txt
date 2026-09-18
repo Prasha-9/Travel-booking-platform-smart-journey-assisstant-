@@ -6,3 +6,5 @@ pytesseract==0.3.13
 python-dotenv==1.2.3
 reportlab==5.0.1
 Requests==2.34.2
+gunicorn
+whitenoise
